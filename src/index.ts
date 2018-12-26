@@ -21,7 +21,7 @@ dotenv.config({path: `./${process.env.NODE_ENV}.env`})
  *
  * @class TwitchOnlineTracker
  */
-class TwitchOnlineTracker extends EventEmitter {
+export class TwitchOnlineTracker extends EventEmitter {
   options: TwitchOnlineTrackerOptions
 
   tracked: string[]

@@ -1,7 +1,7 @@
 {
   "name": "twitchtrackstreamstatus",
   "version": "1.0.0",
-  "description": "",
+  "description": "A library to help track streamers and fires an event if they go online.",
   "main": "lib/",
   "types": "lib/*.d.ts",
   "directories": {
@@ -12,6 +12,7 @@
     "watch": "tsc --watch -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": ["twitchtv", "twitch", "api"],
   "author": "andy",
   "license": "ISC",
   "dependencies": {
