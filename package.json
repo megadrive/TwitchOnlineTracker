@@ -1,5 +1,5 @@
 {
-  "name": "twitchtrackstreamstatus",
+  "name": "twitchonlinetracker",
   "version": "1.0.3",
   "description": "A library to help track streamers and fires an event if they go online.",
   "main": "lib/",
