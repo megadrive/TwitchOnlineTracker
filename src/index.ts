@@ -75,7 +75,7 @@ export class TwitchOnlineTracker extends EventEmitter {
   /**
    * Gets the version number.
    *
-   * @returns {string} The version number as a string.
+   * @returns {string} The version number
    * @memberof TwitchOnlineTracker
    */
   version () {
@@ -190,9 +190,7 @@ export class TwitchOnlineTracker extends EventEmitter {
   start () {
     this.log(`[tot] starting to poll at ${this.options.pollInterval}s intervals`)
     this._loopIntervalId = setInterval(() => {
-      this._loop().catch(error => {
-        throw new Error(error)
-      })
+      this._loop()
     }, this.options.pollInterval * 1000)
     return this
   }
@@ -236,9 +234,12 @@ export class TwitchOnlineTracker extends EventEmitter {
 
         this._cachedStreamData = streamRequestData.data
       }
-      return
     } catch (e) {
-      throw new Error(e)
+      // unauthorized
+      if (e.message.includes('401')) {
+        this.error('Twitch returned with an Unauthorized response. Your client_id probably wrong. Stopping.')
+      }
+      this.stop()
     }
   }
 

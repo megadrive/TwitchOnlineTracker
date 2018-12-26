@@ -24,10 +24,11 @@ export declare class TwitchOnlineTracker extends EventEmitter {
      * @memberof TwitchOnlineTracker
      */
     log(...rest: any[]): void;
+    error(...rest: any[]): void;
     /**
      * Gets the version number.
      *
-     * @returns {string} The version number as a string.
+     * @returns {string} The version number
      * @memberof TwitchOnlineTracker
      */
     version(): any;

@@ -1,12 +1,13 @@
 {
   "name": "twitchtrackstreamstatus",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A library to help track streamers and fires an event if they go online.",
   "main": "lib/",
   "types": "lib/*.d.ts",
   "directories": {
     "lib": "lib"
   },
+  "repository": {"url": "https://github.com/megadrive/TwitchOnlineTracker"},
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch -p tsconfig.json",
