@@ -1,6 +1,6 @@
 {
   "name": "twitchtrackstreamstatus",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library to help track streamers and fires an event if they go online.",
   "main": "lib/",
   "types": "lib/*.d.ts",

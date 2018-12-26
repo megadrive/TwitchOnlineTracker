@@ -190,7 +190,9 @@ export class TwitchOnlineTracker extends EventEmitter {
   start () {
     this.log(`[tot] starting to poll at ${this.options.pollInterval}s intervals`)
     this._loopIntervalId = setInterval(() => {
-      this._loop()
+      this._loop().catch(error => {
+        throw new Error(error)
+      })
     }, this.options.pollInterval * 1000)
     return this
   }
