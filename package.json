@@ -1,0 +1,24 @@
+{
+  "name": "twitchtrackstreamstatus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/",
+  "types": "lib/*.d.ts",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "andy",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^6.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.2.2"
+  }
+}
