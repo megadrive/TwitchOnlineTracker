@@ -2,6 +2,8 @@
 
 ## Quickstart
 
+Install: `npm install --save twitchonlinetracker`
+
 Get a Client ID. See Step 1 of the [Twitch API Introduction](https://dev.twitch.tv/docs/api/#introduction) on how to do this.
 
 ```js
