@@ -7,7 +7,7 @@ Install: `npm install --save twitchonlinetracker`
 Get a Client ID. See Step 1 of the [Twitch API Introduction](https://dev.twitch.tv/docs/api/#introduction) on how to do this.
 
 ```js
-const { TwitchOnlineTracker } = require('twitchtrackstreamstatus')
+const { TwitchOnlineTracker } = require('twitchonlinetracker')
 const tracker = new TwitchOnlineTracker({
   client_id: "your twitch app client id", // used for api requests
   track: ['channel1', 'channel2'], // all the channels you want to track
