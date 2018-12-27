@@ -7,7 +7,9 @@
   "directories": {
     "lib": "lib"
   },
-  "repository": {"url": "https://github.com/megadrive/TwitchOnlineTracker"},
+  "repository": {
+    "url": "https://github.com/megadrive/TwitchOnlineTracker"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch -p tsconfig.json",

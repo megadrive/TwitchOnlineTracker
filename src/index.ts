@@ -24,7 +24,7 @@ dotenv.config({path: `./${process.env.NODE_ENV}.env`})
 export class TwitchOnlineTracker extends EventEmitter {
   options: TwitchOnlineTrackerOptions
 
-  tracked: string[]
+  tracked: Set<string>
 
   _cachedStreamData: StreamData[]
   _loopIntervalId: any
@@ -36,7 +36,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    */
   constructor (options: TwitchOnlineTrackerOptions) {
     super()
-    this.tracked = []
+    this.tracked = new Set()
     this._cachedStreamData = []
     this.options = options
 
@@ -172,14 +172,29 @@ export class TwitchOnlineTracker extends EventEmitter {
   }
 
   /**
-   * Begin tracking a Stream's status
+   * Begin tracking a stream
    *
    * @param {string[]} loginNames An array of login names of streamers
    * @memberof TwitchOnlineTracker
    */
   track (loginNames: string[]) {
     this.log(`[tot] tracking ${loginNames.join(', ')}`)
-    this.tracked = this.tracked.concat(loginNames.map(login => login.toLowerCase()))
+    loginNames.forEach(login => {
+      this.tracked.add(login.toLowerCase())
+    })
+  }
+
+  /**
+   * Stop tracking a stream
+   *
+   * @param {string[]} loginNames An array of login names of streamers
+   * @memberof TwitchOnlineTracker
+   */
+  untrack (loginNames: string[]) {
+    this.log(`[tot] untracking ${loginNames.join(', ')}`)
+    loginNames.forEach(login => {
+      this.tracked.delete(login.toLowerCase())
+    })
   }
 
   /**
@@ -213,8 +228,8 @@ export class TwitchOnlineTracker extends EventEmitter {
    */
   async _loop () {
     try {
-      if (this.tracked.length) {
-        const _streamDataJson = await this.streams({user_login: this.tracked})
+      if (this.tracked.size) {
+        const _streamDataJson = await this.streams({user_login: Array.from(this.tracked)})
         const streamRequestData: StreamRequestData = _streamDataJson
 
         // has a stream started? check on cached
@@ -237,7 +252,9 @@ export class TwitchOnlineTracker extends EventEmitter {
     } catch (e) {
       // unauthorized
       if (e.message.includes('401')) {
-        this.error('Twitch returned with an Unauthorized response. Your client_id probably wrong. Stopping.')
+        this.emit('error', Error('Twitch returned with an Unauthorized response. Your client_id probably wrong. Stopping.'))
+      } else {
+        this.emit('error', e)
       }
       this.stop()
     }
@@ -250,9 +267,9 @@ export class TwitchOnlineTracker extends EventEmitter {
    */
   _announce (streamData: StreamData) {
     /**
-     * @event TwitchOnlineTracker#started
+     * @event TwitchOnlineTracker#live
      * @param {StreamData} channel The stream that has started
      */
-    this.emit('started', streamData)
+    this.emit('live', streamData)
   }
 }

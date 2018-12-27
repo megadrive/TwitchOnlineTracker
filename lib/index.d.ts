@@ -8,7 +8,7 @@ import { StreamData, StreamsApiEndPointOptions, TwitchOnlineTrackerOptions, User
  */
 export declare class TwitchOnlineTracker extends EventEmitter {
     options: TwitchOnlineTrackerOptions;
-    tracked: string[];
+    tracked: Set<string>;
     _cachedStreamData: StreamData[];
     _loopIntervalId: any;
     /**
@@ -24,7 +24,6 @@ export declare class TwitchOnlineTracker extends EventEmitter {
      * @memberof TwitchOnlineTracker
      */
     log(...rest: any[]): void;
-    error(...rest: any[]): void;
     /**
      * Gets the version number.
      *
@@ -59,12 +58,19 @@ export declare class TwitchOnlineTracker extends EventEmitter {
      */
     streams(params: StreamsApiEndPointOptions): Promise<any>;
     /**
-     * Begin tracking a Stream's status
+     * Begin tracking a stream
      *
      * @param {string[]} loginNames An array of login names of streamers
      * @memberof TwitchOnlineTracker
      */
     track(loginNames: string[]): void;
+    /**
+     * Stop tracking a stream
+     *
+     * @param {string[]} loginNames An array of login names of streamers
+     * @memberof TwitchOnlineTracker
+     */
+    untrack(loginNames: string[]): void;
     /**
      * Start making requests.
      *
