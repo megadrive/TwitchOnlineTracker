@@ -1,0 +1,38 @@
+{
+    "name": "twitchonlinetracker",
+    "version": "1.1.0",
+    "description": "A library to help track streamers and fires an event if they go online.",
+    "main": "lib/",
+    "types": "lib/*.d.ts",
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "url": "https://github.com/megadrive/TwitchOnlineTracker"
+    },
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch -p tsconfig.json",
+        "test": "mocha -r ts-node/register src/**/*.test.ts"
+    },
+    "keywords": [
+        "twitchtv",
+        "twitch",
+        "api"
+    ],
+    "author": "andy",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.18.0"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/dotenv": "^6.1.0",
+        "@types/mocha": "^5.2.5",
+        "chai": "^4.2.0",
+        "dotenv": "^6.2.0",
+        "mocha": "^5.2.0",
+        "ts-node": "^7.0.1",
+        "typescript": "^3.2.2"
+    }
+}

@@ -4,6 +4,8 @@ import * as dotenv from 'dotenv'
 import axios from 'axios'
 import * as EventEmitter from 'events'
 
+import * as pkg from '../package.json'
+
 import {
   UserData,
   UserRequestData,
@@ -13,6 +15,7 @@ import {
   TwitchOnlineTrackerOptions,
   UsersApiEndpointOptions
 } from './interfaces'
+import { start } from 'repl';
 
 dotenv.config({path: `./${process.env.NODE_ENV}.env`})
 
@@ -69,7 +72,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    * @memberof TwitchOnlineTracker
    */
   log (...rest) {
-    if (this.options.debug) console.log(...rest)
+    if (this.options.debug) console.log(`[${pkg.name}]`, ...rest)
   }
 
   /**
@@ -92,7 +95,7 @@ export class TwitchOnlineTracker extends EventEmitter {
   async api (endpoint: string) {
     try {
       const twitchApiBase: string = 'https://api.twitch.tv/helix/'
-      this.log(`[tot] making a request: ${twitchApiBase}${endpoint}`)
+      this.log(`making a request: ${twitchApiBase}${endpoint}`)
       const response = await axios(twitchApiBase + endpoint, {
         headers: {
           'Client-ID': this.options.client_id
@@ -120,7 +123,7 @@ export class TwitchOnlineTracker extends EventEmitter {
   async users (params: UsersApiEndpointOptions) {
     try {
       if (!params.id && !params.login) {
-        throw new Error(`[tot] Need login or id for Users endpoint.`)
+        throw new Error(`Need login or id for Users endpoint.`)
       }
 
       let paramString = ''
@@ -178,7 +181,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    * @memberof TwitchOnlineTracker
    */
   track (loginNames: string[]) {
-    this.log(`[tot] tracking ${loginNames.join(', ')}`)
+    this.log(`tracking ${loginNames.join(', ')}`)
     loginNames.forEach(login => {
       this.tracked.add(login.toLowerCase())
     })
@@ -191,7 +194,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    * @memberof TwitchOnlineTracker
    */
   untrack (loginNames: string[]) {
-    this.log(`[tot] untracking ${loginNames.join(', ')}`)
+    this.log(`untracking ${loginNames.join(', ')}`)
     loginNames.forEach(login => {
       this.tracked.delete(login.toLowerCase())
     })
@@ -203,7 +206,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    * @memberof TwitchOnlineTracker
    */
   start () {
-    this.log(`[tot] starting to poll at ${this.options.pollInterval}s intervals`)
+    this.log(`starting to poll at ${this.options.pollInterval}s intervals`)
     this._loopIntervalId = setInterval(() => {
       this._loop()
     }, this.options.pollInterval * 1000)
@@ -231,23 +234,19 @@ export class TwitchOnlineTracker extends EventEmitter {
       if (this.tracked.size) {
         const _streamDataJson = await this.streams({user_login: Array.from(this.tracked)})
         const streamRequestData: StreamRequestData = _streamDataJson
-
-        // has a stream started? check on cached
-        const started = []
-        streamRequestData.data.forEach(stream => {
-          // for each stream, check if it's cached already. if not, it is a new stream.
-          const isCached = this._cachedStreamData.filter(cached => cached.user_id === stream.user_id).length > 0
-          
-          if (!isCached) {
-            // announce
-            this._announce(stream)
-            started.push(stream.user_name)
-          }
-        })
+        
+        const started = streamRequestData.data
+          .filter((current) => {
+              return this._cachedStreamData.filter((other) => {
+                return other.user_name === current.user_name
+              }).length == 0;
+            })
 
         if (started.length) this.log(`${started.length} new streams`)
 
         this._cachedStreamData = streamRequestData.data
+
+        return started
       }
     } catch (e) {
       // unauthorized
