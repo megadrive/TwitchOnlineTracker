@@ -73,7 +73,7 @@ When a stream is found to have gone offline, fires this event. The callback func
 Example:
 ```javascript
 tracker.on('offline', function (channel) {
-  console.log(`${streamData.user_name} has gone offline.`)
+  console.log(`${channel} has gone offline.`)
 })
 ```
 
