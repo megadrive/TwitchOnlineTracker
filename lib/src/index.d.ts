@@ -95,4 +95,11 @@ export declare class TwitchOnlineTracker extends EventEmitter {
      * @memberof TwitchOnlineTracker
      */
     _announce(streamData: StreamData): void;
+    /**
+     * Emit an event when a stream stops
+     * @fires TwitchOnlineTracker#offline
+     * @param {string} channelName the channel name of the stream that has stopped
+     * @memberof TwitchOnlineTracker
+     */
+    _offline(channelName: string): void;
 }

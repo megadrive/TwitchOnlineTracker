@@ -241,8 +241,23 @@ export class TwitchOnlineTracker extends EventEmitter {
                 return other.user_name === current.user_name
               }).length == 0;
             })
+        
+        const stopped = this._cachedStreamData
+          .filter((current) => {
+              return streamRequestData.data.filter((other) => {
+                return other.user_name === current.user_name
+              }).length == 0;
+            })
 
-        if (started.length) this.log(`${started.length} new streams`)
+        if (started.length) {
+          this.log(`${started.length} new streams`)
+          started.forEach(startedStream => this._announce(startedStream))
+        }
+
+        if (stopped.length) {
+          this.log(`${stopped.length} stopped streams`)
+          stopped.forEach(stoppedStream => this._offline(stoppedStream.user_name))
+        }
 
         this._cachedStreamData = streamRequestData.data
 
@@ -267,8 +282,22 @@ export class TwitchOnlineTracker extends EventEmitter {
   _announce (streamData: StreamData) {
     /**
      * @event TwitchOnlineTracker#live
-     * @param {StreamData} channel The stream that has started
+     * @param {StreamData} The stream that has started
      */
     this.emit('live', streamData)
+  }
+
+  /**
+   * Emit an event when a stream stops
+   * @fires TwitchOnlineTracker#offline
+   * @param {string} channelName the channel name of the stream that has stopped
+   * @memberof TwitchOnlineTracker
+   */
+  _offline (channelName: string) {
+    /**
+     * @event TwitchOnlineTracker#offline
+     * @param {string} The stream that has stopped
+     */
+    this.emit('offline', channelName)
   }
 }
