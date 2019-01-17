@@ -66,6 +66,17 @@ tracker.on('live', function (streamData) {
 })
 ```
 
+### tracker.on('offline', function (channelName: string) { })
+
+When a stream is found to have gone offline, fires this event. The callback function provides a string.
+
+Example:
+```javascript
+tracker.on('offline', function (channel) {
+  console.log(`${streamData.user_name} has gone offline.`)
+})
+```
+
 ### tracker.on('error', function (error) { })
 
 Fires this event on error. Make sure you capture this event.
