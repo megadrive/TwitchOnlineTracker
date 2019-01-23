@@ -4,8 +4,6 @@ import * as dotenv from 'dotenv'
 import axios from 'axios'
 import * as EventEmitter from 'events'
 
-import * as pkg from '../package.json'
-
 import {
   UserData,
   UserRequestData,
@@ -15,7 +13,6 @@ import {
   TwitchOnlineTrackerOptions,
   UsersApiEndpointOptions
 } from './interfaces'
-import { start } from 'repl';
 
 dotenv.config({path: `./${process.env.NODE_ENV}.env`})
 
@@ -72,17 +69,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    * @memberof TwitchOnlineTracker
    */
   log (...rest) {
-    if (this.options.debug) console.log(`[${pkg.name}]`, ...rest)
-  }
-
-  /**
-   * Gets the version number.
-   *
-   * @returns {string} The version number
-   * @memberof TwitchOnlineTracker
-   */
-  version () {
-    return require('./package.json').version
+    if (this.options.debug) console.log('[twitchonlinetracker]', ...rest)
   }
 
   /**
@@ -219,7 +206,7 @@ export class TwitchOnlineTracker extends EventEmitter {
    * @memberof TwitchOnlineTracker
    */
   stop () {
-    this.log('[tot] forcefully stopping polling')
+    this.log('forcefully stopping polling')
     clearInterval(this._loopIntervalId)
     this._loopIntervalId = 0
   }

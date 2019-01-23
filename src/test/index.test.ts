@@ -13,10 +13,14 @@ const tracker = new TwitchOnlineTracker({
     'debug': false,
     'pollInterval': 5,
     'client_id': process.env.TEST_CLIENT_ID || null,
-    'track': process.env.TEST_STREAMS.split(',')
+    'track': process.env.TEST_STREAMS.split(',') || []
 })
 
 describe('TwitchOnlineTracker', () => {
+    it('should be tracking at least 1 stream', () => {
+        expect(tracker.tracked.size).to.be.greaterThan(0)
+    })
+
     it('will start polling with an _loopIntervalId', () => {
         tracker.start()
         expect(tracker._loopIntervalId).to.not.equal(NaN)
