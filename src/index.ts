@@ -14,8 +14,6 @@ import {
   UsersApiEndpointOptions
 } from './interfaces'
 
-dotenv.config({path: `./${process.env.NODE_ENV}.env`})
-
 /**
  * Twitch Online Tracker
  *
