@@ -23,7 +23,7 @@
   "author": "andy",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.1"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
